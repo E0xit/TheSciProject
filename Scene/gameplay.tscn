@@ -1,14 +1,8 @@
 [gd_scene format=3 uid="uid://b6ij0rg8rm7t8"]
 
-[ext_resource type="Texture2D" uid="uid://cjm3wljpg6icg" path="res://Resource/Image/Joy Out.svg" id="1_q6iex"]
+[ext_resource type="Script" uid="uid://dov3syyych6d3" path="res://Script/test.gd" id="1_r1l2u"]
 
 [node name="Gameplay" type="Node2D" unique_id=1851378946]
+script = ExtResource("1_r1l2u")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=2003970359]
-
-[node name="Joystick" type="Node" parent="." unique_id=412874246]
-
-[node name="Sprite2D" type="Sprite2D" parent="Joystick" unique_id=1543118591]
-texture_filter = 1
-texture_repeat = 1
-texture = ExtResource("1_q6iex")
