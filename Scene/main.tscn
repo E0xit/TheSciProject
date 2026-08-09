@@ -1,0 +1,67 @@
+[gd_scene format=3 uid="uid://dovmbxc4x66en"]
+
+[ext_resource type="Texture2D" uid="uid://bkgw4565xdwdt" path="res://Resource/Image/DefaultMap.png" id="1_f6udf"]
+[ext_resource type="PackedScene" uid="uid://c2box7r1ytc1o" path="res://Scene/player.tscn" id="2_sblpm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mcpcq"]
+size = Vector2(55, 972)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xqwa5"]
+size = Vector2(1798, 30)
+
+[node name="Main" type="Node2D" unique_id=1331867618]
+
+[node name="Background" type="Sprite2D" parent="." unique_id=1817788062]
+texture_filter = 1
+scale = Vector2(3.6779175, 3.6779175)
+texture = ExtResource("1_f6udf")
+
+[node name="Environment" type="Node2D" parent="." unique_id=499864203]
+
+[node name="Boundaries" type="StaticBody2D" parent="Environment" unique_id=220316543]
+
+[node name="LeftWall" type="CollisionShape2D" parent="Environment/Boundaries" unique_id=321340625]
+position = Vector2(-872.5, 0)
+shape = SubResource("RectangleShape2D_mcpcq")
+
+[node name="RightWall" type="CollisionShape2D" parent="Environment/Boundaries" unique_id=31599643]
+position = Vector2(872.5, 0)
+shape = SubResource("RectangleShape2D_mcpcq")
+
+[node name="Floors" type="Node2D" parent="Environment" unique_id=1119630793]
+
+[node name="Floor1" type="StaticBody2D" parent="Environment/Floors" unique_id=1747367039]
+position = Vector2(0, 415)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Floors/Floor1" unique_id=1162338307]
+shape = SubResource("RectangleShape2D_xqwa5")
+one_way_collision = true
+
+[node name="Floor2" type="StaticBody2D" parent="Environment/Floors" unique_id=186991606]
+position = Vector2(0, 212)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Floors/Floor2" unique_id=1220582249]
+shape = SubResource("RectangleShape2D_xqwa5")
+one_way_collision = true
+
+[node name="Floor3" type="StaticBody2D" parent="Environment/Floors" unique_id=470154846]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Floors/Floor3" unique_id=769703103]
+shape = SubResource("RectangleShape2D_xqwa5")
+one_way_collision = true
+
+[node name="Floor4" type="StaticBody2D" parent="Environment/Floors" unique_id=929000707]
+position = Vector2(0, -207)
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Floors/Floor4" unique_id=1555889656]
+shape = SubResource("RectangleShape2D_xqwa5")
+one_way_collision = true
+
+[node name="Player" parent="." unique_id=1578863103 instance=ExtResource("2_sblpm")]
+position = Vector2(-781, -316)
+scale = Vector2(5.789882, 5.789882)
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=782834451]

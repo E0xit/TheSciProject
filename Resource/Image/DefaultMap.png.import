@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bqafs7e8ks37i"
-path="res://.godot/imported/Suzanne.png-d274aff3efb0691b73cbaf345d635d8d.ctex"
+uid="uid://bkgw4565xdwdt"
+path="res://.godot/imported/DefaultMap.png-996e2dfc71a515c09cad4f4f6de63dbd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Resource/Image/Prototype/Suzanne.png"
-dest_files=["res://.godot/imported/Suzanne.png-d274aff3efb0691b73cbaf345d635d8d.ctex"]
+source_file="res://Resource/Image/DefaultMap.png"
+dest_files=["res://.godot/imported/DefaultMap.png-996e2dfc71a515c09cad4f4f6de63dbd.ctex"]
 
 [params]
 

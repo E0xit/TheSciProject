@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://c2box7r1ytc1o"]
+
+[ext_resource type="Texture2D" uid="uid://ucpcmol45ju4" path="res://Resource/Image/Default.png" id="1_kelma"]
+[ext_resource type="Script" uid="uid://b15nhurw624pq" path="res://Script/player.gd" id="1_y8w33"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_q5w17"]
+
+[sub_resource type="Animation" id="Animation_y8w33"]
+resource_name = "fall"
+
+[sub_resource type="Animation" id="Animation_xa75v"]
+resource_name = "jump"
+
+[sub_resource type="Animation" id="Animation_58ae2"]
+resource_name = "run"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ivevv"]
+_data = {
+&"fall": SubResource("Animation_y8w33"),
+&"jump": SubResource("Animation_xa75v"),
+&"run": SubResource("Animation_58ae2")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mcpcq"]
+size = Vector2(10, 30)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mcpcq"]
+
+[node name="Player" type="CharacterBody2D" unique_id=1578863103]
+collision_mask = 3
+script = ExtResource("1_y8w33")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=866381897]
+texture_filter = 1
+position = Vector2(0, -8.000001)
+scale = Vector2(0.22999997, 0.22999997)
+texture = ExtResource("1_kelma")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=40336132]
+shape = SubResource("CapsuleShape2D_q5w17")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1642781044]
+libraries/ = SubResource("AnimationLibrary_ivevv")
+
+[node name="FlashlightHitbox" type="Area2D" parent="." unique_id=414761118]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FlashlightHitbox" unique_id=1232726165]
+position = Vector2(11, 0)
+shape = SubResource("RectangleShape2D_mcpcq")
+
+[node name="Hurtbox" type="Area2D" parent="." unique_id=322740574]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=233907975]
+shape = SubResource("CircleShape2D_mcpcq")
