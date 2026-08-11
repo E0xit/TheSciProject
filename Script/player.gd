@@ -1,34 +1,43 @@
 extends CharacterBody2D
 
-# ==========================================
-# ⚙️ ตัวแปรตั้งค่า (Config & Tweaks)
-# ==========================================
+signal health_changed(current_hp, max_hp)
+signal player_died
+
+@export_group("Player Stats")
+@export var max_health: int = 3
+@export var invincibility_time: float = 3.0
+
 @export_group("Player Physics")
-@export var speed: float = 750.0
-@export var jump_velocity: float = -1000.0
+@export var speed: float = 550.0
+@export var gravity_multiplier: float = 1
+@export var jump_velocity: float = -650.0
+
+@export_group("Floor Limits")
+@export var restrict_top_floor_jump: bool = true
+@export var top_floor_y_threshold: float = -200.0
+@export var restrict_bottom_floor_drop: bool = true
+@export var bottom_floor_y_threshold: float = 225.0 # ปรับค่า Y ของ Floor 1 ใน Inspector ตามจริง
 
 @export_group("Debug Options")
 @export var enable_logs: bool = true
 @export var show_debug_draw: bool = true
 
+var current_health: int
+var is_invincible: bool = false
 var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
-
-# 🧭 ทิศทางเป้าหมายที่ผู้เล่นเลือก (1 = ขวา, -1 = ซ้าย)
 var target_direction: int = 1
-# 🛑 สถานะติดกำแพงหรือไม่
 var is_stopped_at_wall: bool = false
-
 var flashlight_initial_x_offset: float = 35.0
 var _is_dropping_down: bool = false
 
-@onready var sprite: Sprite2D = $Sprite2D
-@onready var anim_player: AnimationPlayer = $AnimationPlayer
+@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D # 💡 เปลี่ยนเป็น AnimatedSprite2D
 @onready var flashlight_hitbox: Area2D = $FlashlightHitbox
 @onready var hurtbox: Area2D = $Hurtbox
+@onready var stomp_hitbox: Area2D = $StompHitbox
 
 
 func _ready() -> void:
-	log_msg("🚀 [PLAYER READY] New Manual-Direction Auto-Run Control Active!")
+	current_health = max_health
 	
 	if flashlight_hitbox:
 		flashlight_initial_x_offset = abs(flashlight_hitbox.position.x)
@@ -36,138 +45,206 @@ func _ready() -> void:
 			flashlight_initial_x_offset = 35.0
 			flashlight_hitbox.position.x = flashlight_initial_x_offset
 			
+	if hurtbox:
+		hurtbox.area_entered.connect(_on_hurtbox_area_entered)
+		
+	# ปิด Stomp Hitbox ไว้ตั้งแต่เริ่มต้น
+	if stomp_hitbox:
+		stomp_hitbox.monitoring = false
+		stomp_hitbox.monitorable = false
+		stomp_hitbox.add_to_group("player_attack")
+		
 	_verify_nodes()
 
 
 func _physics_process(delta: float) -> void:
-	# 1. อ่าน Input กำหนดทิศทางการเดินจากผู้เล่น (กด Left/Right)
 	handle_direction_input()
+	handle_lane_switching()
+	print(velocity.x)
+	print(abs(velocity.x)<0.1)
 
-	# 2. Gravity & Animation Management
-	# 1. ระบบดึงลงพื้น (Gravity)
+	# 1. Gravity Logic (คิดแรงโน้มถ่วงอย่างเดียว ยังไม่สั่งเล่น Animation ตรงนี้)
 	if not is_on_floor():
-		# 💡 HOTFIX: ถ้ากำลังกดมุดชั้นล่าง ให้เพิ่มแรงร่วงเร็วขึ้น ไม่ให้ติดขัด
 		if _is_dropping_down:
-			velocity.y += gravity * 1.5 * delta
+			velocity.y += gravity * gravity_multiplier * 2.5 * delta
 		else:
-			velocity.y += gravity * delta
+			velocity.y += gravity * gravity_multiplier * delta
 
-		if velocity.y < 0:
-			_play_animation("jump")
-		else:
-			_play_animation("fall")
-	else:
-		if is_stopped_at_wall:
-			_play_animation("idle")
-		else:
-			_play_animation("run")
-
-
-	# 3. คำนวณความเร็ว X ตามสถานะกำแพง
+	# 2. Wall Movement Logic (คำนวณตำแหน่งและอัปเดตสถานะ is_stopped_at_wall ให้เสร็จสรรพ)
 	if is_on_wall():
 		var wall_normal = get_wall_normal()
-		var pushing_right_wall = (wall_normal.x < -0.5 and target_direction == 1)
-		var pushing_left_wall = (wall_normal.x > 0.5 and target_direction == -1)
+		var pushing_wall = (wall_normal.x < -0.5 and target_direction == 1) or (wall_normal.x > 0.5 and target_direction == -1)
 
-		if pushing_right_wall or pushing_left_wall:
+		var is_real_wall = false
+		for i in get_slide_collision_count():
+			var collision = get_slide_collision(i)
+			if collision and collision.get_collider():
+				if collision.get_collider().get_collision_layer_value(1):
+					is_real_wall = true
+					break
+
+		if pushing_wall and is_real_wall:
 			if not is_stopped_at_wall:
 				is_stopped_at_wall = true
-				log_msg("🧱 [WALL STOP] Hit wall! Waiting for opposite direction input...")
+				log_msg("🧱 [WALL STOP] Waiting for direction change...")
 			
-			# 💡 HOTFIX: ถ้านิ่งติดกำแพง แต่กำลัง "มุดลงชั้น" (_is_dropping_down) 
-			# ให้ตัด velocity.x = 0 ทันที เพื่อไม่ให้ดันอัดเข้าหากำแพงตอนร่วง!
-			if _is_dropping_down:
-				velocity.x = 0
-			else:
-				velocity.x = target_direction * 1.0
+			velocity.x = 0.0
 		else:
 			is_stopped_at_wall = false
-			velocity.x = target_direction * speed
+			velocity.x = 0.0 if _is_dropping_down else target_direction * speed
 	else:
 		is_stopped_at_wall = false
-		velocity.x = target_direction * speed
+		velocity.x = 0.0 if _is_dropping_down else target_direction * speed
 
-	# 4. Lane Switching (Jump / Drop)
-	handle_lane_switching()
+	# 3. Animation Logic (สลับแอนิเมชันตรงนี้ หลังรู้ค่า is_stopped_at_wall ที่ถูกต้องแล้ว!)
+	if not is_on_floor():
+		_play_animation("jumping" if velocity.y < 0 else "dropping")
+	else:
+		_play_animation("idle" if is_stopped_at_wall else "running")
 
 	move_and_slide()
 
 	if show_debug_draw:
 		queue_redraw()
 
+func _drop_through_platform() -> void:
+	_is_dropping_down = true
+	velocity.x = 0.0
+	
+	# 💡 เปิดใช้งาน Stomp Hitbox ใต้เท้าทันทีที่ทุบลง
+	if stomp_hitbox:
+		stomp_hitbox.monitoring = true
+		stomp_hitbox.monitorable = true
+	
+	set_collision_mask_value(3, false)
+	await get_tree().create_timer(0.25).timeout
+	set_collision_mask_value(3, true)
+	
+	# 💡 ปิด Stomp Hitbox เมื่อจบท่าทุบ
+	if stomp_hitbox:
+		stomp_hitbox.monitoring = false
+		stomp_hitbox.monitorable = false
+		
+	_is_dropping_down = false
 
-# ==========================================
-# 🎮 การรับค่า Input ทิศทางจากผู้เล่น
-# ==========================================
+
 func handle_direction_input() -> void:
-	if Input.is_action_just_pressed("ui_right") and target_direction != 1:
+	if Input.is_action_just_pressed("right") and target_direction != 1:
 		change_direction(1)
-	elif Input.is_action_just_pressed("ui_left") and target_direction != -1:
+	elif Input.is_action_just_pressed("left") and target_direction != -1:
 		change_direction(-1)
 
 
 func change_direction(new_dir: int) -> void:
-	var old_dir = target_direction
 	target_direction = new_dir
-	
-	# ปรับภาพ Sprite และ Offset ของไฟฉาย
-	sprite.flip_h = (target_direction == -1)
-	flashlight_hitbox.position.x = flashlight_initial_x_offset * target_direction
-
-	log_msg("🧭 [INPUT] Direction Changed: %d -> %d | Flashlight Offset X: %.2f" % [old_dir, target_direction, flashlight_hitbox.position.x])
 
 
-# ==========================================
-# ↕️ การเปลี่ยนชั้น
-# ==========================================
+	if sprite:
+		sprite.flip_h = (target_direction == -1)
+	if flashlight_hitbox:
+		flashlight_hitbox.position.x = flashlight_initial_x_offset * target_direction
+
+
 func handle_lane_switching() -> void:
-	if Input.is_action_just_pressed("ui_up"):
-		if is_on_floor():
-			velocity.y = jump_velocity
-			log_msg("⬆️ [ACTION] JUMP executed!")
+	if Input.is_action_just_pressed("up"):
+		var is_on_top_floor = restrict_top_floor_jump and (global_position.y < top_floor_y_threshold)
 		
-	elif Input.is_action_just_pressed("ui_down"):
-		if is_on_floor() and not _is_dropping_down:
-			log_msg("⬇️ [ACTION] DROPDOWN executed!")
+		if is_on_floor() and not is_on_top_floor:
+			velocity.y = jump_velocity
+			log_msg("⬆️ [JUMP]")
+		elif is_on_top_floor:
+			log_msg("🚫 [JUMP REJECTED] Reached Top Floor!")
+
+	elif Input.is_action_just_pressed("down"):
+		# 💡 เช็กเพิ่ม: ห้ามมุดลงถ้าอยู่บน Floor 1 (Y มากกว่า threshold)
+		var is_on_bottom_floor = restrict_bottom_floor_drop and (global_position.y > bottom_floor_y_threshold)
+		
+		if is_on_floor() and not _is_dropping_down and not is_on_bottom_floor:
+			log_msg("🔨 [STOMP] Dropping down with Stomp Hitbox!")
 			_drop_through_platform()
-
-
-func _drop_through_platform() -> void:
-	_is_dropping_down = true
-	set_collision_mask_value(2, false)
-	
-	await get_tree().create_timer(0.25).timeout
-	
-	set_collision_mask_value(2, true)
-	_is_dropping_down = false
+		elif is_on_bottom_floor:
+			log_msg("🚫 [DROP REJECTED] Reached Bottom Floor (Floor 1)!")
 
 
 # ==========================================
-# 🛠️ HELPER & DEBUG
+# 🩸 Health & Damage Mechanics
+# ==========================================
+func take_damage(amount: int = 1) -> void:
+	if is_invincible or current_health <= 0:
+		return
+
+	current_health = max(0, current_health - amount)
+	health_changed.emit(current_health, max_health)
+	log_msg("💔 [DAMAGE] Player took %d damage! Current HP: %d/%d" % [amount, current_health, max_health])
+
+	if current_health <= 0:
+		die()
+	else:
+		_trigger_invincibility()
+
+
+func heal(amount: int = 1) -> void:
+	if current_health <= 0:
+		return
+	current_health = min(max_health, current_health + amount)
+	health_changed.emit(current_health, max_health)
+	log_msg("💚 [HEAL] Player healed %d HP! Current HP: %d/%d" % [amount, current_health, max_health])
+
+
+func die() -> void:
+	log_msg("💀 [PLAYER DIED] Game Over triggered!")
+	player_died.emit()
+	set_physics_process(false)
+
+
+func _trigger_invincibility() -> void:
+	is_invincible = true
+	var tween = create_tween().set_loops(int(invincibility_time / 0.1))
+	tween.tween_property(sprite, "modulate:a", 0.2, 0.05)
+	tween.tween_property(sprite, "modulate:a", 1.0, 0.05)
+
+	await get_tree().create_timer(invincibility_time).timeout
+	is_invincible = false
+	sprite.modulate.a = 1.0
+
+
+func _on_hurtbox_area_entered(area: Area2D) -> void:
+	if area.is_in_group("enemy_hitbox") or area.is_in_group("enemy_projectile"):
+		take_damage(1)
+
+
+# ==========================================
+# 🛠️ Helpers & Debug
 # ==========================================
 func log_msg(text: String) -> void:
 	if enable_logs:
-		var time_str = Time.get_time_string_from_system()
-		print_rich("[color=cyan][%s][/color] [b][Player][/b] %s" % [time_str, text])
+		print_rich("[color=cyan][%s][/color] [b][Player][/b] %s" % [Time.get_time_string_from_system(), text])
 
 
 func _play_animation(anim_name: String) -> void:
-	if anim_player.has_animation(anim_name):
-		if anim_player.current_animation != anim_name:
-			anim_player.play(anim_name)
-
-
+	if sprite.sprite_frames and sprite.sprite_frames.has_animation(anim_name):
+		# 1. สั่งเล่นเฉพาะตอนที่ชื่อเปลี่ยนไปจากเดิม หรือ อนิเมชันมันหยุดรันอยู่
+		if sprite.animation != anim_name or not sprite.is_playing():
+			sprite.play(anim_name)
+			log_msg("🎬 [ANIM START] Switched to -> " + anim_name)
+			
+		# 2. Print Debug เช็กสถานะแบบ Real-time (ทำงานทุกเฟรม)
+		if enable_logs:
+			print("🔍 [Anim Debug] Request: %s | Playing: %s | Frame: %d | is_playing: %s" % [
+				anim_name,
+				sprite.animation,
+				sprite.frame,
+				str(sprite.is_playing())
+			])
 func _verify_nodes() -> void:
-	if not sprite: log_msg("❌ [MISSING NODE] Sprite2D is missing!")
-	if not anim_player: log_msg("❌ [MISSING NODE] AnimationPlayer is missing!")
-	if not flashlight_hitbox: log_msg("❌ [MISSING NODE] FlashlightHitbox (Area2D) is missing!")
-	if not hurtbox: log_msg("❌ [MISSING NODE] Hurtbox (Area2D) is missing!")
+	# 💡 ลบการเช็ก anim_player ออก
+	if not sprite or not flashlight_hitbox or not hurtbox:
+		log_msg("❌ [ERROR] Missing required child nodes!")
 
 
 func _draw() -> void:
-	if not show_debug_draw:
-		return
+	if not show_debug_draw: return
 	draw_line(Vector2.ZERO, velocity * 0.2, Color.GREEN, 3.0)
 	draw_circle(Vector2.ZERO, 4.0, Color.RED)
-	var debug_info = "Stopped: %s\nDir: %d | Vel: (%.1f, %.1f)" % [is_stopped_at_wall, target_direction, velocity.x, velocity.y]
+	var debug_info = "HP: %d/%d | Stopped: %s\nDir: %d | Vel: (%.1f, %.1f)" % [current_health, max_health, is_stopped_at_wall, target_direction, velocity.x, velocity.y]
 	draw_string(ThemeDB.fallback_font, Vector2(-50, -50), debug_info, HORIZONTAL_ALIGNMENT_LEFT, -1, 12, Color.YELLOW)

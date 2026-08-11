@@ -2,6 +2,9 @@
 
 [ext_resource type="Texture2D" uid="uid://bkgw4565xdwdt" path="res://Resource/Image/DefaultMap.png" id="1_f6udf"]
 [ext_resource type="PackedScene" uid="uid://c2box7r1ytc1o" path="res://Scene/player.tscn" id="2_sblpm"]
+[ext_resource type="PackedScene" uid="uid://ceadqkjnvxdrd" path="res://Scene/Roamer.tscn" id="3_r34rm"]
+[ext_resource type="PackedScene" uid="uid://qflx0qp8eirg" path="res://Scene/shooter.tscn" id="4_2wwxx"]
+[ext_resource type="PackedScene" uid="uid://bfmnnoffhcdja" path="res://Scene/jumper.tscn" id="5_3amdw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mcpcq"]
 size = Vector2(55, 972)
@@ -19,6 +22,8 @@ texture = ExtResource("1_f6udf")
 [node name="Environment" type="Node2D" parent="." unique_id=499864203]
 
 [node name="Boundaries" type="StaticBody2D" parent="Environment" unique_id=220316543]
+collision_layer = 2
+collision_mask = 0
 
 [node name="LeftWall" type="CollisionShape2D" parent="Environment/Boundaries" unique_id=321340625]
 position = Vector2(-872.5, 0)
@@ -32,21 +37,24 @@ shape = SubResource("RectangleShape2D_mcpcq")
 
 [node name="Floor1" type="StaticBody2D" parent="Environment/Floors" unique_id=1747367039]
 position = Vector2(0, 415)
+collision_layer = 2
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Floors/Floor1" unique_id=1162338307]
 shape = SubResource("RectangleShape2D_xqwa5")
-one_way_collision = true
 
 [node name="Floor2" type="StaticBody2D" parent="Environment/Floors" unique_id=186991606]
 position = Vector2(0, 212)
-collision_layer = 2
+collision_layer = 4
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Floors/Floor2" unique_id=1220582249]
 shape = SubResource("RectangleShape2D_xqwa5")
 one_way_collision = true
 
 [node name="Floor3" type="StaticBody2D" parent="Environment/Floors" unique_id=470154846]
-collision_layer = 2
+collision_layer = 4
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Floors/Floor3" unique_id=769703103]
 shape = SubResource("RectangleShape2D_xqwa5")
@@ -54,7 +62,8 @@ one_way_collision = true
 
 [node name="Floor4" type="StaticBody2D" parent="Environment/Floors" unique_id=929000707]
 position = Vector2(0, -207)
-collision_layer = 2
+collision_layer = 4
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Environment/Floors/Floor4" unique_id=1555889656]
 shape = SubResource("RectangleShape2D_xqwa5")
@@ -63,5 +72,24 @@ one_way_collision = true
 [node name="Player" parent="." unique_id=1578863103 instance=ExtResource("2_sblpm")]
 position = Vector2(-781, -316)
 scale = Vector2(5.789882, 5.789882)
+enable_logs = false
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=782834451]
+
+[node name="Roamer" parent="." unique_id=1641051578 instance=ExtResource("3_r34rm")]
+position = Vector2(266, -97)
+
+[node name="Roamer2" parent="." unique_id=971133954 instance=ExtResource("3_r34rm")]
+position = Vector2(-536, 109)
+
+[node name="Roamer3" parent="." unique_id=1446484021 instance=ExtResource("3_r34rm")]
+position = Vector2(-169, 312)
+
+[node name="Roamer4" parent="." unique_id=58120133 instance=ExtResource("3_r34rm")]
+position = Vector2(330, 106)
+
+[node name="Shooter" parent="." unique_id=831249251 instance=ExtResource("4_2wwxx")]
+position = Vector2(-372.0001, -101)
+
+[node name="Jumper" parent="." unique_id=2112963014 instance=ExtResource("5_3amdw")]
+position = Vector2(701, 314)

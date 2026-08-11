@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://qflx0qp8eirg"]
+
+[ext_resource type="PackedScene" uid="uid://dobcsaqrgjkup" path="res://Scene/enemy_base.tscn" id="1_1sq15"]
+[ext_resource type="Script" uid="uid://bqlg8xiamvg6b" path="res://Script/shooter.gd" id="2_8gioi"]
+[ext_resource type="PackedScene" uid="uid://b53aa0l2by07a" path="res://Scene/projectile.tscn" id="3_gqb0m"]
+[ext_resource type="Texture2D" uid="uid://co1n07rve46ly" path="res://icon.svg" id="4_kenkt"]
+
+[node name="Shooter" unique_id=1641051578 instance=ExtResource("1_1sq15")]
+script = ExtResource("2_8gioi")
+projectile_scene = ExtResource("3_gqb0m")
+shoot_interval = 2.0
+screen_center_x = 0.0
+
+[node name="Sprite2D" parent="." index="0" unique_id=2144635538]
+scale = Vector2(0.25564396, 0.25564396)
+texture = ExtResource("4_kenkt")

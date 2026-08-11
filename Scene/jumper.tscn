@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://bfmnnoffhcdja"]
+
+[ext_resource type="PackedScene" uid="uid://dobcsaqrgjkup" path="res://Scene/enemy_base.tscn" id="1_beu1o"]
+[ext_resource type="Script" uid="uid://cd4dshuys2oer" path="res://Script/jumper.gd" id="2_vtd4i"]
+[ext_resource type="Texture2D" uid="uid://co1n07rve46ly" path="res://icon.svg" id="3_ube7u"]
+
+[node name="Jumper" unique_id=1641051578 instance=ExtResource("1_beu1o")]
+collision_layer = 0
+script = ExtResource("2_vtd4i")
+jump_cooldown = 1.5
+jump_force_x = 100.0
+jump_force_y = -650.0
+drop_force_y = 200.0
+restrict_top_floor_jump = true
+top_floor_y_threshold = -200.0
+restrict_bottom_floor_drop = true
+bottom_floor_y_threshold = 225.0
+
+[node name="Sprite2D" parent="." index="0" unique_id=2144635538]
+scale = Vector2(0.24257927, 0.24257927)
+texture = ExtResource("3_ube7u")

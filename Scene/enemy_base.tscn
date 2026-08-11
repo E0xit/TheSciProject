@@ -1,0 +1,30 @@
+[gd_scene format=3 uid="uid://dobcsaqrgjkup"]
+
+[ext_resource type="Script" uid="uid://bnr0a6qfe0ybu" path="res://Script/enemy_base.gd" id="1_830jy"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mcpcq"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xqwa5"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_q5w17"]
+
+[node name="EnemyBase" type="CharacterBody2D" unique_id=1641051578]
+scale = Vector2(5.0995474, 5.0995474)
+collision_layer = 8
+collision_mask = 6
+script = ExtResource("1_830jy")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2144635538]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1824031272]
+shape = SubResource("CapsuleShape2D_mcpcq")
+
+[node name="Hitbox" type="Area2D" parent="." unique_id=36168926 groups=["enemy_hitbox"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox" unique_id=98482885]
+shape = SubResource("CapsuleShape2D_xqwa5")
+
+[node name="Hurtbox" type="Area2D" parent="." unique_id=359170264 groups=["enemy_hurtbox"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=490418184]
+shape = SubResource("CircleShape2D_q5w17")
