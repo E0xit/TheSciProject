@@ -1,0 +1,32 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://roenk0m5c30c"]
+
+[ext_resource type="Texture2D" uid="uid://d0sk0w8tgr31u" path="res://Resource/Animation Assets/Jumper/prejump.png" id="1_6xtxs"]
+[ext_resource type="Texture2D" uid="uid://wvtdfxutnb1x" path="res://Resource/Animation Assets/Jumper/idle.png" id="2_xcxr2"]
+[ext_resource type="Texture2D" uid="uid://cux2d0m7s38fq" path="res://Resource/Animation Assets/Jumper/jump.png" id="3_r6jxh"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_6xtxs")
+}],
+"loop": 1,
+"name": &"charge",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_xcxr2")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_r6jxh")
+}],
+"loop": 1,
+"name": &"jumping",
+"speed": 5.0
+}]

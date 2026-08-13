@@ -14,7 +14,8 @@ collision_layer = 8
 collision_mask = 6
 script = ExtResource("1_830jy")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=2144635538]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1816185751]
+texture_filter = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1824031272]
 shape = SubResource("CapsuleShape2D_mcpcq")

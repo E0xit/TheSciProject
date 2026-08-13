@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://c7ni3ntaranfd"]
+
+[ext_resource type="Texture2D" uid="uid://bmqjqdjknuwi6" path="res://Resource/Image/images.jpeg" id="1_v1pe1"]
+
+[node name="Scene" type="Node2D" unique_id=1310921389]
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1823724673]
+scale = Vector2(4.8506436, 4.8506436)
+texture = ExtResource("1_v1pe1")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1959397206]

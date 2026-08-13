@@ -1,0 +1,22 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://61c5ig5hvt4c"]
+
+[ext_resource type="Texture2D" uid="uid://bhbwkabrqq6e1" path="res://Resource/Animation Assets/Roamer/8.png" id="1_sru7a"]
+[ext_resource type="Texture2D" uid="uid://bon6mlnypwljq" path="res://Resource/Animation Assets/Roamer/9.png" id="2_2fff2"]
+[ext_resource type="Texture2D" uid="uid://duj5wmqam3c4l" path="res://Resource/Animation Assets/Roamer/10.png" id="3_tsc3e"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_sru7a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_2fff2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_tsc3e")
+}],
+"loop": 1,
+"name": &"running",
+"speed": 5.0
+}]

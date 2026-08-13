@@ -2,14 +2,12 @@
 
 [ext_resource type="Script" uid="uid://b15nhurw624pq" path="res://Script/player.gd" id="1_y8w33"]
 [ext_resource type="SpriteFrames" uid="uid://dievhihhkootc" path="res://Resource/Animation Assets/TTT/ttt.tres" id="2_y8w33"]
+[ext_resource type="Texture2D" uid="uid://co1n07rve46ly" path="res://icon.svg" id="3_xa75v"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_q5w17"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mcpcq"]
-size = Vector2(10, 30)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_xqwa5"]
-size = Vector2(20, 17)
+size = Vector2(23, 36)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mcpcq"]
 
@@ -24,24 +22,21 @@ position = Vector2(0, -1)
 scale = Vector2(0.15986006, 0.15986006)
 sprite_frames = ExtResource("2_y8w33")
 animation = &"dropping"
-frame_progress = 0.20426856
+frame = 1
+frame_progress = 0.46215776
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=40336132]
 shape = SubResource("CapsuleShape2D_q5w17")
 
 [node name="FlashlightHitbox" type="Area2D" parent="." unique_id=414761118 groups=["player_attack"]]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="FlashlightHitbox" unique_id=1232726165]
-position = Vector2(5, 0)
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FlashlightHitbox" unique_id=1232726165 groups=["player_attack"]]
 shape = SubResource("RectangleShape2D_mcpcq")
 
-[node name="StompHitbox" type="Area2D" parent="." unique_id=1795017824 groups=["player_attack"]]
-monitoring = false
-monitorable = false
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StompHitbox" unique_id=933057836]
-position = Vector2(0, 8.5)
-shape = SubResource("RectangleShape2D_xqwa5")
+[node name="Sprite2D" type="Sprite2D" parent="FlashlightHitbox/CollisionShape2D" unique_id=1453499822]
+visible = false
+scale = Vector2(0.18276337, 0.2794169)
+texture = ExtResource("3_xa75v")
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=322740574]
 

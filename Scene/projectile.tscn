@@ -1,17 +1,18 @@
 [gd_scene format=3 uid="uid://b53aa0l2by07a"]
 
-[ext_resource type="Texture2D" uid="uid://co1n07rve46ly" path="res://icon.svg" id="1_ak2ol"]
 [ext_resource type="Script" uid="uid://d0tx4gik3ludu" path="res://Script/projectile.gd" id="1_yqtq8"]
+[ext_resource type="Texture2D" uid="uid://bmfmdtynbywan" path="res://Resource/Image/Bomb.png" id="2_yqtq8"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mcpcq"]
 
-[node name="Projectile" type="Area2D" unique_id=1925592801 groups=["enemy_projectile"]]
+[node name="Projectile" type="Area2D" unique_id=1925592801 node_paths=PackedStringArray("sprite") groups=["enemy_projectile"]]
 scale = Vector2(4.1471395, 4.1471395)
 script = ExtResource("1_yqtq8")
+sprite = NodePath("Sprite2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=691463445]
-scale = Vector2(0.16008568, 0.16008568)
-texture = ExtResource("1_ak2ol")
+scale = Vector2(0.4366197, 0.4366197)
+texture = ExtResource("2_yqtq8")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=82324414]
 shape = SubResource("CircleShape2D_mcpcq")

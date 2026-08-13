@@ -3,8 +3,10 @@
 [ext_resource type="Texture2D" uid="uid://bkgw4565xdwdt" path="res://Resource/Image/DefaultMap.png" id="1_f6udf"]
 [ext_resource type="PackedScene" uid="uid://c2box7r1ytc1o" path="res://Scene/player.tscn" id="2_sblpm"]
 [ext_resource type="PackedScene" uid="uid://ceadqkjnvxdrd" path="res://Scene/Roamer.tscn" id="3_r34rm"]
-[ext_resource type="PackedScene" uid="uid://qflx0qp8eirg" path="res://Scene/shooter.tscn" id="4_2wwxx"]
+[ext_resource type="Script" uid="uid://ddb8fdf0dx6i2" path="res://Script/enemy_spawner.gd" id="4_2wwxx"]
+[ext_resource type="PackedScene" uid="uid://qflx0qp8eirg" path="res://Scene/shooter.tscn" id="5_1xcnr"]
 [ext_resource type="PackedScene" uid="uid://bfmnnoffhcdja" path="res://Scene/jumper.tscn" id="5_3amdw"]
+[ext_resource type="Script" uid="uid://clgihpoygtfty" path="res://Script/game_manager.gd" id="6_1xcnr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mcpcq"]
 size = Vector2(55, 972)
@@ -76,20 +78,21 @@ enable_logs = false
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=782834451]
 
-[node name="Roamer" parent="." unique_id=1641051578 instance=ExtResource("3_r34rm")]
-position = Vector2(266, -97)
+[node name="GameManager" type="Node" parent="." unique_id=1143828621 node_paths=PackedStringArray("score_display")]
+script = ExtResource("6_1xcnr")
+score_display = NodePath("../ScoreLabel")
 
-[node name="Roamer2" parent="." unique_id=971133954 instance=ExtResource("3_r34rm")]
-position = Vector2(-536, 109)
+[node name="EnemySpawner" type="Sprite2D" parent="." unique_id=257582062]
+script = ExtResource("4_2wwxx")
+roamer_scene = ExtResource("3_r34rm")
+shooter_scene = ExtResource("5_1xcnr")
+jumper_scene = ExtResource("5_3amdw")
 
-[node name="Roamer3" parent="." unique_id=1446484021 instance=ExtResource("3_r34rm")]
-position = Vector2(-169, 312)
-
-[node name="Roamer4" parent="." unique_id=58120133 instance=ExtResource("3_r34rm")]
-position = Vector2(330, 106)
-
-[node name="Shooter" parent="." unique_id=831249251 instance=ExtResource("4_2wwxx")]
-position = Vector2(-372.0001, -101)
-
-[node name="Jumper" parent="." unique_id=2112963014 instance=ExtResource("5_3amdw")]
-position = Vector2(701, 314)
+[node name="ScoreLabel" type="Label" parent="." unique_id=924450774]
+offset_left = -760.0
+offset_top = 343.0
+offset_right = 977.0
+offset_bottom = 532.0
+theme_override_font_sizes/font_size = 138
+text = "67/67"
+horizontal_alignment = 2

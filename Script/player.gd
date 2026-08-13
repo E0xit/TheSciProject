@@ -3,6 +3,7 @@ extends CharacterBody2D
 signal health_changed(current_hp, max_hp)
 signal player_died
 
+
 @export_group("Player Stats")
 @export var max_health: int = 3
 @export var invincibility_time: float = 3.0
@@ -17,6 +18,11 @@ signal player_died
 @export var top_floor_y_threshold: float = -200.0
 @export var restrict_bottom_floor_drop: bool = true
 @export var bottom_floor_y_threshold: float = 225.0 # ปรับค่า Y ของ Floor 1 ใน Inspector ตามจริง
+
+@export_group("Swipe Controls")
+@export var min_swipe_distance: float = 50.0 # ระยะห่างขั้นต่ำที่ถือว่าเป็นการ "ปัด" ไม่ใช่แค่ "แตะ"
+
+var _swipe_start_pos: Vector2
 
 @export_group("Debug Options")
 @export var enable_logs: bool = true
@@ -33,7 +39,6 @@ var _is_dropping_down: bool = false
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D # 💡 เปลี่ยนเป็น AnimatedSprite2D
 @onready var flashlight_hitbox: Area2D = $FlashlightHitbox
 @onready var hurtbox: Area2D = $Hurtbox
-@onready var stomp_hitbox: Area2D = $StompHitbox
 
 
 func _ready() -> void:
@@ -42,17 +47,13 @@ func _ready() -> void:
 	if flashlight_hitbox:
 		flashlight_initial_x_offset = abs(flashlight_hitbox.position.x)
 		if flashlight_initial_x_offset == 0:
-			flashlight_initial_x_offset = 35.0
+			flashlight_initial_x_offset = 10.0
 			flashlight_hitbox.position.x = flashlight_initial_x_offset
 			
 	if hurtbox:
 		hurtbox.area_entered.connect(_on_hurtbox_area_entered)
 		
 	# ปิด Stomp Hitbox ไว้ตั้งแต่เริ่มต้น
-	if stomp_hitbox:
-		stomp_hitbox.monitoring = false
-		stomp_hitbox.monitorable = false
-		stomp_hitbox.add_to_group("player_attack")
 		
 	_verify_nodes()
 
@@ -60,8 +61,6 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	handle_direction_input()
 	handle_lane_switching()
-	print(velocity.x)
-	print(abs(velocity.x)<0.1)
 
 	# 1. Gravity Logic (คิดแรงโน้มถ่วงอย่างเดียว ยังไม่สั่งเล่น Animation ตรงนี้)
 	if not is_on_floor():
@@ -83,7 +82,7 @@ func _physics_process(delta: float) -> void:
 					is_real_wall = true
 					break
 
-		if pushing_wall and is_real_wall:
+		if pushing_wall and is_real_wall :
 			if not is_stopped_at_wall:
 				is_stopped_at_wall = true
 				log_msg("🧱 [WALL STOP] Waiting for direction change...")
@@ -91,10 +90,9 @@ func _physics_process(delta: float) -> void:
 			velocity.x = 0.0
 		else:
 			is_stopped_at_wall = false
-			velocity.x = 0.0 if _is_dropping_down else target_direction * speed
 	else:
 		is_stopped_at_wall = false
-		velocity.x = 0.0 if _is_dropping_down else target_direction * speed
+		velocity.x =  target_direction * speed
 
 	# 3. Animation Logic (สลับแอนิเมชันตรงนี้ หลังรู้ค่า is_stopped_at_wall ที่ถูกต้องแล้ว!)
 	if not is_on_floor():
@@ -109,21 +107,11 @@ func _physics_process(delta: float) -> void:
 
 func _drop_through_platform() -> void:
 	_is_dropping_down = true
-	velocity.x = 0.0
-	
-	# 💡 เปิดใช้งาน Stomp Hitbox ใต้เท้าทันทีที่ทุบลง
-	if stomp_hitbox:
-		stomp_hitbox.monitoring = true
-		stomp_hitbox.monitorable = true
-	
+
 	set_collision_mask_value(3, false)
 	await get_tree().create_timer(0.25).timeout
 	set_collision_mask_value(3, true)
-	
-	# 💡 ปิด Stomp Hitbox เมื่อจบท่าทุบ
-	if stomp_hitbox:
-		stomp_hitbox.monitoring = false
-		stomp_hitbox.monitorable = false
+
 		
 	_is_dropping_down = false
 
@@ -137,33 +125,37 @@ func handle_direction_input() -> void:
 
 func change_direction(new_dir: int) -> void:
 	target_direction = new_dir
-
-
 	if sprite:
 		sprite.flip_h = (target_direction == -1)
+    
+    # ย้ายตำแหน่ง + รีเซ็ต Physics State เล็กน้อยกันบั๊กวาร์ปชน
 	if flashlight_hitbox:
 		flashlight_hitbox.position.x = flashlight_initial_x_offset * target_direction
 
 
 func handle_lane_switching() -> void:
 	if Input.is_action_just_pressed("up"):
-		var is_on_top_floor = restrict_top_floor_jump and (global_position.y < top_floor_y_threshold)
-		
-		if is_on_floor() and not is_on_top_floor:
-			velocity.y = jump_velocity
-			log_msg("⬆️ [JUMP]")
-		elif is_on_top_floor:
-			log_msg("🚫 [JUMP REJECTED] Reached Top Floor!")
-
+		_execute_jump()
 	elif Input.is_action_just_pressed("down"):
-		# 💡 เช็กเพิ่ม: ห้ามมุดลงถ้าอยู่บน Floor 1 (Y มากกว่า threshold)
-		var is_on_bottom_floor = restrict_bottom_floor_drop and (global_position.y > bottom_floor_y_threshold)
-		
-		if is_on_floor() and not _is_dropping_down and not is_on_bottom_floor:
-			log_msg("🔨 [STOMP] Dropping down with Stomp Hitbox!")
-			_drop_through_platform()
-		elif is_on_bottom_floor:
-			log_msg("🚫 [DROP REJECTED] Reached Bottom Floor (Floor 1)!")
+		_execute_stomp()
+
+# 💡 แยก Logic กระโดดออกมา
+func _execute_jump() -> void:
+	var is_on_top_floor = restrict_top_floor_jump and (global_position.y < top_floor_y_threshold)
+	if is_on_floor() and not is_on_top_floor:
+		velocity.y = jump_velocity
+		log_msg("⬆️ [JUMP] Action Triggered!")
+	elif is_on_top_floor:
+		log_msg("🚫 [JUMP REJECTED] Reached Top Floor!")
+
+# 💡 แยก Logic มุดลงออกมา
+func _execute_stomp() -> void:
+	var is_on_bottom_floor = restrict_bottom_floor_drop and (global_position.y > bottom_floor_y_threshold)
+	if is_on_floor() and not _is_dropping_down and not is_on_bottom_floor:
+		log_msg("🔨 [STOMP] Action Triggered!")
+		_drop_through_platform()
+	elif is_on_bottom_floor:
+		log_msg("🚫 [DROP REJECTED] Reached Bottom Floor!")
 
 
 # ==========================================
@@ -248,3 +240,36 @@ func _draw() -> void:
 	draw_circle(Vector2.ZERO, 4.0, Color.RED)
 	var debug_info = "HP: %d/%d | Stopped: %s\nDir: %d | Vel: (%.1f, %.1f)" % [current_health, max_health, is_stopped_at_wall, target_direction, velocity.x, velocity.y]
 	draw_string(ThemeDB.fallback_font, Vector2(-50, -50), debug_info, HORIZONTAL_ALIGNMENT_LEFT, -1, 12, Color.YELLOW)
+
+
+# ==========================================
+# 📱 Swipe Control Mechanics
+# ==========================================
+func _unhandled_input(event: InputEvent) -> void:
+	# ตรวจจับการแตะหน้าจอ (หรือคลิกเมาส์)
+	if event is InputEventScreenTouch:
+		if event.pressed:
+			_swipe_start_pos = event.position # บันทึกจุดที่เริ่มแตะ
+		else:
+			_calculate_swipe(_swipe_start_pos, event.position) # คำนวณตอนปล่อยนิ้ว
+
+func _calculate_swipe(start_pos: Vector2, end_pos: Vector2) -> void:
+	var swipe_vector = end_pos - start_pos
+	
+	# ถ้าลากสั้นกว่า 50 พิกเซล ให้ถือว่าเป็นการแตะ (Tap) ไม่ใช่ปัด
+	if swipe_vector.length() < min_swipe_distance:
+		return 
+
+	# เช็กว่าปัดแกน X (แนวนอน) หรือ แกน Y (แนวตั้ง) แรงกว่ากัน
+	if abs(swipe_vector.x) > abs(swipe_vector.y):
+		# ➡️ แนวนอน: สลับทิศทางวิ่ง
+		if swipe_vector.x > 0 and target_direction != 1:
+			change_direction(1) # ปัดขวา
+		elif swipe_vector.x < 0 and target_direction != -1:
+			change_direction(-1) # ปัดซ้าย
+	else:
+		# ⬆️ แนวตั้ง: กระโดด หรือ มุด
+		if swipe_vector.y < 0:
+			_execute_jump() # ปัดขึ้น (Y ติดลบคือขึ้น)
+		else:
+			_execute_stomp() # ปัดลง (Y เป็นบวกคือลง)

@@ -2,12 +2,16 @@
 
 [ext_resource type="PackedScene" uid="uid://dobcsaqrgjkup" path="res://Scene/enemy_base.tscn" id="1_783ke"]
 [ext_resource type="Script" uid="uid://cgh4l57g7ybft" path="res://Script/roamer.gd" id="2_4cc6u"]
-[ext_resource type="Texture2D" uid="uid://co1n07rve46ly" path="res://icon.svg" id="3_8jbcj"]
+[ext_resource type="SpriteFrames" uid="uid://61c5ig5hvt4c" path="res://Resource/Animation Assets/Roamer/roamer.tres" id="3_8jbcj"]
 
 [node name="Roamer" unique_id=1641051578 instance=ExtResource("1_783ke")]
 collision_layer = 0
 script = ExtResource("2_4cc6u")
 
-[node name="Sprite2D" parent="." index="0" unique_id=2144635538]
-scale = Vector2(0.23828125, 0.23828125)
-texture = ExtResource("3_8jbcj")
+[node name="AnimatedSprite2D" parent="." index="0" unique_id=1816185751]
+position = Vector2(0, 3.725821)
+scale = Vector2(0.032791987, 0.032791987)
+sprite_frames = ExtResource("3_8jbcj")
+animation = &"running"
+frame = 1
+frame_progress = 0.70972466

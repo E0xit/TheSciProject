@@ -5,17 +5,15 @@ class_name EnemyBase extends CharacterBody2D
 
 var direction: int = 1
 var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
-var wall_bounce_cooldown: float = 0.0 # ตัวแปรป้องกันสลับทิศรัวๆ
+var wall_bounce_cooldown: float = 0.0
 
-@onready var sprite: Sprite2D = $Sprite2D
-@onready var hurtbox: Area2D = $Hurtbox
+@onready var hurtbox: Area2D = $Hurtbox # 💡 เอา sprite ออกจากเบสคลาสแล้ว!
 
 func _ready() -> void:
 	if hurtbox:
 		hurtbox.area_entered.connect(_on_hurtbox_entered)
 
 func _physics_process(delta: float) -> void:
-	# ลดเวลา Cooldown การชนกำแพง
 	if wall_bounce_cooldown > 0:
 		wall_bounce_cooldown -= delta
 
@@ -24,17 +22,18 @@ func _physics_process(delta: float) -> void:
 
 	velocity.x = direction * speed
 
-	# ชนกำแพงสลับทิศ + เช็ก Cooldown
+	# ชนกำแพงสลับทิศ
 	if is_on_wall() and wall_bounce_cooldown <= 0:
 		direction *= -1
-		wall_bounce_cooldown = 0.15 # ล็อกไว้ 0.15 วินาที
-		
-		if sprite:
-			sprite.flip_h = (direction == -1)
+		wall_bounce_cooldown = 0.15
 
 	move_and_slide()
 
 func die() -> void:
+	var manager = get_tree().get_first_node_in_group("game_manager")
+	if manager and manager.has_method("add_score"):
+		manager.add_score(1)
+
 	if death_effect:
 		var fx = death_effect.instantiate()
 		fx.global_position = global_position
