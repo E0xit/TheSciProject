@@ -7,8 +7,8 @@
 [node name="Jumper" unique_id=1641051578 instance=ExtResource("1_beu1o")]
 collision_layer = 0
 script = ExtResource("2_vtd4i")
-jump_cooldown = 1.5
-charge_time = 0.5
+jump_cooldown = 0.5
+charge_time = 0.7
 jump_force_x = 100.0
 jump_force_y = -650.0
 drop_force_y = 200.0

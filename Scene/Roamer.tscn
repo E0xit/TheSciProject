@@ -7,6 +7,7 @@
 [node name="Roamer" unique_id=1641051578 instance=ExtResource("1_783ke")]
 collision_layer = 0
 script = ExtResource("2_4cc6u")
+speed = 250.0
 
 [node name="AnimatedSprite2D" parent="." index="0" unique_id=1816185751]
 position = Vector2(0, 3.725821)

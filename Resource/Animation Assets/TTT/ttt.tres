@@ -1,12 +1,20 @@
 [gd_resource type="SpriteFrames" format=3 uid="uid://dievhihhkootc"]
 
 [ext_resource type="Texture2D" uid="uid://bqjtv2clws8q1" path="res://Resource/Animation Assets/TTT/Droping/0001.png" id="1_1skav"]
+[ext_resource type="Texture2D" uid="uid://cm81uvu056a7q" path="res://Resource/Animation Assets/Effect/Death/explosion-1-b/Sprites/explosion-1-b-1.png" id="1_iu8ts"]
 [ext_resource type="Texture2D" uid="uid://dg7eftk6m45ob" path="res://Resource/Animation Assets/TTT/Droping/0002.png" id="2_f1bsr"]
+[ext_resource type="Texture2D" uid="uid://yhhx6rykj2qa" path="res://Resource/Animation Assets/Effect/Death/explosion-1-b/Sprites/explosion-1-b-2.png" id="2_n8uxv"]
 [ext_resource type="Texture2D" uid="uid://m1j2208b85d3" path="res://Resource/Animation Assets/TTT/Droping/0003.png" id="3_8kdeh"]
+[ext_resource type="Texture2D" uid="uid://banus6ojellvi" path="res://Resource/Animation Assets/Effect/Death/explosion-1-b/Sprites/explosion-1-b-3.png" id="3_scxhy"]
 [ext_resource type="Texture2D" uid="uid://mup1narbtoma" path="res://Resource/Animation Assets/TTT/Droping/0004.png" id="4_dwwam"]
+[ext_resource type="Texture2D" uid="uid://bgsm3ior178nd" path="res://Resource/Animation Assets/Effect/Death/explosion-1-b/Sprites/explosion-1-b-4.png" id="4_lknni"]
 [ext_resource type="Texture2D" uid="uid://cmdkg5oj1xou5" path="res://Resource/Animation Assets/TTT/Droping/0005.png" id="5_a3w41"]
+[ext_resource type="Texture2D" uid="uid://263opk77gace" path="res://Resource/Animation Assets/Effect/Death/explosion-1-b/Sprites/explosion-1-b-5.png" id="5_ob2xt"]
 [ext_resource type="Texture2D" uid="uid://d35sk5tecww7e" path="res://Resource/Animation Assets/TTT/Droping/0006.png" id="6_avs38"]
+[ext_resource type="Texture2D" uid="uid://eefvcrgyn6qa" path="res://Resource/Animation Assets/Effect/Death/explosion-1-b/Sprites/explosion-1-b-6.png" id="6_kut8u"]
+[ext_resource type="Texture2D" uid="uid://bmfu1b3h52x1x" path="res://Resource/Animation Assets/Effect/Death/explosion-1-b/Sprites/explosion-1-b-7.png" id="7_a03f5"]
 [ext_resource type="Texture2D" uid="uid://30pi5sovf72d" path="res://Resource/Animation Assets/TTT/Droping/0007.png" id="7_s6ilo"]
+[ext_resource type="Texture2D" uid="uid://bx6mjsinbqgti" path="res://Resource/Animation Assets/Effect/Death/explosion-1-b/Sprites/explosion-1-b-8.png" id="8_l1jtc"]
 [ext_resource type="Texture2D" uid="uid://bgce5t7n028iv" path="res://Resource/Animation Assets/TTT/Droping/0008.png" id="8_r1wee"]
 [ext_resource type="Texture2D" uid="uid://2uuxirgf3173" path="res://Resource/Animation Assets/TTT/Droping/0009.png" id="9_2vsfj"]
 [ext_resource type="Texture2D" uid="uid://f3expd4fqula" path="res://Resource/Animation Assets/TTT/Droping/0010.png" id="10_qubes"]
@@ -58,6 +66,38 @@
 
 [resource]
 animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_iu8ts")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_n8uxv")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_scxhy")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_lknni")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_ob2xt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_kut8u")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_a03f5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_l1jtc")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": 0,
+"name": &"death",
+"speed": 10.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": ExtResource("1_1skav")

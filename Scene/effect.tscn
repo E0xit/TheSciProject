@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://jx0bfj51rfan"]
+
+[ext_resource type="Script" uid="uid://c8rji6uhrnf7b" path="res://Script/effect.gd" id="1_grmct"]
+
+[node name="Effect" type="Node2D" unique_id=1788296772]
+script = ExtResource("1_grmct")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=846895306]
+texture_filter = 1
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=922642297]

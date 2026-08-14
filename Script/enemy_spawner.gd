@@ -5,10 +5,9 @@ class_name EnemySpawner extends Node2D
 @export var shooter_scene: PackedScene
 @export var jumper_scene: PackedScene
 
-# ค่าน้ำหนักสัดส่วนการเกิด
-@export var roamer_weight: float = 35.0  # เกิดง่ายสุด
-@export var shooter_weight: float = 30.0 # ปานกลาง
-@export var jumper_weight: float = 35.0  # สายป่วน
+@export var roamer_weight: float = 35.0  
+@export var shooter_weight: float = 30.0 
+@export var jumper_weight: float = 35.0  
 
 @export_group("Floor Y Configuration")
 @export var floor_y_positions: Array[float] = [-325.0, -100.0, 100.0, 325.0]
@@ -21,7 +20,7 @@ class_name EnemySpawner extends Node2D
 
 @export_group("Progressive Scaling (ยิงสู้นาน ยิ่งเดือด!)")
 @export var initial_spawn_interval: float = 3.5
-@export var min_spawn_interval: float = 1 # ปรับเวลารอไม่ให้ถี่เกินไปเพราะตอนนี้เกิดทีเป็นกลุ่มแล้ว
+@export var min_spawn_interval: float = 1.0
 @export var interval_decay_rate: float = 0.05
 
 @export var initial_max_enemies: int = 5
@@ -29,14 +28,16 @@ class_name EnemySpawner extends Node2D
 @export var enemies_increase_step: int = 15
 
 @export_group("Burst Spawn Configuration (สปอว์นพร้อมกัน)")
-@export var max_burst_count: int = 6        # จำนวนสปอว์นพร้อมกันสูงสุด
-@export var score_for_max_burst: int = 50     # คะแนนที่เริ่มสปอว์นทีละ 4 ตัวแบบเต็มสปีด
+@export var max_burst_count: int = 6        
+@export var score_for_max_burst: int = 50     
 
 var current_spawn_interval: float
 var spawn_timer: Timer
 var player: CharacterBody2D
+var is_spawning: bool = true # 💡 เพิ่ม Flag คุมสถานะการทำงาน
 
 func _ready() -> void:
+	add_to_group("enemy_spawner") # 💡 [FIXED] ใส่กลุ่มให้ Spawner เพื่อให้ค้นหาเจอ!
 	current_spawn_interval = initial_spawn_interval
 	
 	player = get_tree().get_first_node_in_group("player_body") as CharacterBody2D
@@ -44,6 +45,13 @@ func _ready() -> void:
 		player = get_tree().current_scene.find_child("Player", true, false)
 
 	_setup_spawn_timer()
+
+# 💡 [NEW] ฟังก์ชันสั่งหยุดเสก และทำลายตัวเองทันที
+func stop_spawning() -> void:
+	is_spawning = false
+	if spawn_timer:
+		spawn_timer.stop()
+	queue_free()
 
 func _setup_spawn_timer() -> void:
 	spawn_timer = Timer.new()
@@ -53,42 +61,40 @@ func _setup_spawn_timer() -> void:
 	add_child(spawn_timer)
 
 func _try_spawn_enemy() -> void:
-	# 1. ดึง Score ปัจจุบัน
+	if not is_spawning:
+		return
+
 	var current_score = 0
 	var manager = get_tree().get_first_node_in_group("game_manager")
 	if manager and "score" in manager:
 		current_score = manager.score
 
-	# 2. คำนวณ Cap จำนวนศัตรูสูงสุดในแมพ
 	var dynamic_max_enemies = min(
 		initial_max_enemies + int(current_score / float(enemies_increase_step)),
 		max_enemies_cap
 	)
 
-	# 3. เช็กจำนวนศัตรูที่มีอยู่ในแมพตอนนี้
 	var active_enemies = get_tree().get_nodes_in_group("enemy_hitbox")
 	var current_count = active_enemies.size()
 	
 	if current_count >= dynamic_max_enemies:
 		return
 
-	# 4. 💡 คำนวณขนาด Burst (สปอว์นพร้อมกันกี่ตัวรอบนี้?)
-	# คำนวณจาก Score: เริ่มต้น 1 ตัว -> ค่อยๆ เพิ่มตาม Progress สู่ max_burst_count (4 ตัว)
 	var score_progress: float = clamp(float(current_score) / float(score_for_max_burst), 0.0, 1.0)
 	var target_burst: int = int(lerp(1.0, float(max_burst_count), score_progress))
-	# สุ่มเล็กน้อยให้ดูธรรมชาติ (เช่น สุ่มระหว่าง 1 ถึง target_burst)
 	var spawn_amount: int = randi_range(3, target_burst)
 
-	# 5. วน Loop สปอว์นศัตรูตามจำนวน spawn_amount
 	for i in range(spawn_amount):
-		# Re-check ว่าเต็ม Cap แล้วหรือยังในแต่ละรอบของการเสก
+		if not is_spawning:
+			break
+
 		active_enemies = get_tree().get_nodes_in_group("enemy_hitbox")
 		if active_enemies.size() >= dynamic_max_enemies:
 			break
 
 		var spawn_pos = _find_valid_spawn_position()
 		if spawn_pos == Vector2.ZERO:
-			continue # หาจุดว่างไม่ได้ข้ามไปลองตัวถัดไป
+			continue
 
 		var selected_scene = _get_weighted_random_enemy()
 		if not selected_scene:
@@ -98,26 +104,29 @@ func _try_spawn_enemy() -> void:
 		enemy_instance.global_position = spawn_pos
 		get_tree().current_scene.add_child(enemy_instance)
 
-	# 6. เร่งสปีดคูลดาวน์ให้เกิดถี่ขึ้นเรื่อยๆ
 	current_spawn_interval = max(min_spawn_interval, current_spawn_interval - interval_decay_rate)
 	spawn_timer.wait_time = current_spawn_interval
 
 func _find_valid_spawn_position() -> Vector2:
-	var max_attempts = 15
+	var max_attempts = 20
 	
 	for i in range(max_attempts):
 		var random_y = floor_y_positions.pick_random()
 		var random_x = randf_range(spawn_x_min, spawn_x_max)
 		var candidate_pos = Vector2(random_x, random_y)
 
-		# 🛑 เงื่อนไขที่ 1: ห้ามเกิดใกล้ผู้เล่นแกน X ในชั้นเดียวกัน
+		# 🛑 เช็กเงื่อนไขระยะห่างจากผู้เล่น
 		if player and is_instance_valid(player):
-			var same_floor = abs(player.global_position.y - candidate_pos.y) < 50.0
-			var close_x = abs(player.global_position.x - candidate_pos.x) < player_safe_distance_x
-			if same_floor and close_x:
-				continue
+			# 💡 1. ปรับระยะ X ให้กว้างขึ้นตามสปีดผู้เล่น (เช่น 350px)
+			var close_x = abs(player.global_position.x - candidate_pos.x) < 350.0
+			
+			# 💡 2. เช็กว่าผู้เล่นอยู่ใกล้ชั้น Y นี้หรือไม่ (ขยายช่วงเป็น 150px คลุมช่วงกระโดด)
+			var near_this_floor = abs(player.global_position.y - candidate_pos.y) < 150.0
+			
+			if near_this_floor and close_x:
+				continue # ปลอดภัยแน่นอน ทั้งจังหวะวิ่งและจังหวะกระโดด!
 
-		# 🛑 เงื่อนไขที่ 2: ห้ามเกิดซ้อนศัตรูตัวอื่น
+		# 🛑 เช็กเงื่อนไขห้ามเกิดซ้อนกับศัตรูตัวอื่น
 		var overlaps_enemy = false
 		for node in get_tree().current_scene.get_children():
 			if node is EnemyBase and is_instance_valid(node):

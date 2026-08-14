@@ -1,12 +1,13 @@
 [gd_scene format=3 uid="uid://dovmbxc4x66en"]
 
-[ext_resource type="Texture2D" uid="uid://bkgw4565xdwdt" path="res://Resource/Image/DefaultMap.png" id="1_f6udf"]
+[ext_resource type="SpriteFrames" uid="uid://edavbb2o3yor" path="res://Resource/Animation Assets/BG/background.tres" id="1_ow1sv"]
 [ext_resource type="PackedScene" uid="uid://c2box7r1ytc1o" path="res://Scene/player.tscn" id="2_sblpm"]
 [ext_resource type="PackedScene" uid="uid://ceadqkjnvxdrd" path="res://Scene/Roamer.tscn" id="3_r34rm"]
 [ext_resource type="Script" uid="uid://ddb8fdf0dx6i2" path="res://Script/enemy_spawner.gd" id="4_2wwxx"]
 [ext_resource type="PackedScene" uid="uid://qflx0qp8eirg" path="res://Scene/shooter.tscn" id="5_1xcnr"]
 [ext_resource type="PackedScene" uid="uid://bfmnnoffhcdja" path="res://Scene/jumper.tscn" id="5_3amdw"]
 [ext_resource type="Script" uid="uid://clgihpoygtfty" path="res://Script/game_manager.gd" id="6_1xcnr"]
+[ext_resource type="FontFile" uid="uid://bc6waay7h0af8" path="res://Resource/Font/Pixelify_Sans/PixelifySans-VariableFont_wght.ttf" id="8_75buv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mcpcq"]
 size = Vector2(55, 972)
@@ -16,10 +17,13 @@ size = Vector2(1798, 30)
 
 [node name="Main" type="Node2D" unique_id=1331867618]
 
-[node name="Background" type="Sprite2D" parent="." unique_id=1817788062]
+[node name="Background" type="AnimatedSprite2D" parent="." unique_id=640587605]
 texture_filter = 1
 scale = Vector2(3.6779175, 3.6779175)
-texture = ExtResource("1_f6udf")
+sprite_frames = ExtResource("1_ow1sv")
+autoplay = "default"
+frame = 9
+frame_progress = 0.6479296
 
 [node name="Environment" type="Node2D" parent="." unique_id=499864203]
 
@@ -75,6 +79,7 @@ one_way_collision = true
 position = Vector2(-781, -316)
 scale = Vector2(5.789882, 5.789882)
 enable_logs = false
+show_debug_draw = false
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=782834451]
 
@@ -93,6 +98,7 @@ offset_left = -760.0
 offset_top = 343.0
 offset_right = 977.0
 offset_bottom = 532.0
+theme_override_fonts/font = ExtResource("8_75buv")
 theme_override_font_sizes/font_size = 138
 text = "67/67"
 horizontal_alignment = 2

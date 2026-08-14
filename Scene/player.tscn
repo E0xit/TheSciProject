@@ -1,13 +1,16 @@
 [gd_scene format=3 uid="uid://c2box7r1ytc1o"]
 
 [ext_resource type="Script" uid="uid://b15nhurw624pq" path="res://Script/player.gd" id="1_y8w33"]
+[ext_resource type="AudioStream" uid="uid://biudyay4ai5k" path="res://Resource/Sound/SFX/PlayerJumpUp.wav" id="2_p6qlh"]
 [ext_resource type="SpriteFrames" uid="uid://dievhihhkootc" path="res://Resource/Animation Assets/TTT/ttt.tres" id="2_y8w33"]
-[ext_resource type="Texture2D" uid="uid://co1n07rve46ly" path="res://icon.svg" id="3_xa75v"]
+[ext_resource type="AudioStream" uid="uid://b64hukwqrt3a1" path="res://Resource/Sound/SFX/PlayerHurt.wav" id="4_ij4jb"]
+[ext_resource type="AudioStream" uid="uid://b7uo55l3h3sql" path="res://Resource/Sound/SFX/Death.wav" id="5_c68nv"]
+[ext_resource type="Texture2D" uid="uid://d3xh8x5c0co5e" path="res://Resource/Image/Shield.png" id="6_r6jsd"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_q5w17"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mcpcq"]
-size = Vector2(23, 36)
+size = Vector2(16, 36)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_mcpcq"]
 
@@ -15,15 +18,17 @@ size = Vector2(23, 36)
 collision_layer = 0
 collision_mask = 6
 script = ExtResource("1_y8w33")
+sfx_jump = ExtResource("2_p6qlh")
+sfx_stomp = ExtResource("2_p6qlh")
+sfx_hurt = ExtResource("4_ij4jb")
+sfx_die = ExtResource("5_c68nv")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1176613554]
 texture_filter = 1
 position = Vector2(0, -1)
 scale = Vector2(0.15986006, 0.15986006)
 sprite_frames = ExtResource("2_y8w33")
-animation = &"dropping"
-frame = 1
-frame_progress = 0.46215776
+animation = &"idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=40336132]
 shape = SubResource("CapsuleShape2D_q5w17")
@@ -35,10 +40,13 @@ shape = SubResource("RectangleShape2D_mcpcq")
 
 [node name="Sprite2D" type="Sprite2D" parent="FlashlightHitbox/CollisionShape2D" unique_id=1453499822]
 visible = false
-scale = Vector2(0.18276337, 0.2794169)
-texture = ExtResource("3_xa75v")
+texture_filter = 1
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("6_r6jsd")
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=322740574]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox" unique_id=233907975]
 shape = SubResource("CircleShape2D_mcpcq")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=966470741]

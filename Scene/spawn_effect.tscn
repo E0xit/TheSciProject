@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://b34t5ud64kibo"]
+
+[ext_resource type="PackedScene" uid="uid://jx0bfj51rfan" path="res://Scene/effect.tscn" id="1_xct5l"]
+
+[node name="SpawnEffect" unique_id=1788296772 instance=ExtResource("1_xct5l")]

@@ -1,0 +1,75 @@
+[gd_resource type="SpriteFrames" format=3 uid="uid://c332xijqy2d7u"]
+
+[ext_resource type="Texture2D" uid="uid://dedoxeg5i72to" path="res://Resource/Animation Assets/Effect/Death/explosion-1-a/Sprites/explosion-1.png" id="1_y4hlb"]
+[ext_resource type="Texture2D" uid="uid://cs1w8p6agcy21" path="res://Resource/Animation Assets/Effect/Death/explosion-1-a/Sprites/explosion-2.png" id="2_rlt10"]
+[ext_resource type="Texture2D" uid="uid://ducucjo46g6v" path="res://Resource/Animation Assets/Effect/Death/explosion-1-a/Sprites/explosion-3.png" id="3_evllw"]
+[ext_resource type="Texture2D" uid="uid://bkeq6q3yhu0wc" path="res://Resource/Animation Assets/Effect/Death/explosion-1-a/Sprites/explosion-4.png" id="4_rri7s"]
+[ext_resource type="Texture2D" uid="uid://c1nfegeudcvcb" path="res://Resource/Animation Assets/Effect/Death/explosion-1-a/Sprites/explosion-5.png" id="5_ow38i"]
+[ext_resource type="Texture2D" uid="uid://pj5xbhvp4qlf" path="res://Resource/Animation Assets/Effect/Death/explosion-1-a/Sprites/explosion-6.png" id="6_nui46"]
+[ext_resource type="Texture2D" uid="uid://cl5dr205obsqn" path="res://Resource/Animation Assets/Effect/Death/explosion-1-a/Sprites/explosion-7.png" id="7_hod26"]
+[ext_resource type="Texture2D" uid="uid://kvjuevlertuj" path="res://Resource/Animation Assets/Effect/Death/explosion-1-a/Sprites/explosion-8.png" id="8_hxg6n"]
+[ext_resource type="Texture2D" uid="uid://dogljtxbhv5lp" path="res://Resource/Animation Assets/Effect/Death/explosion-1-g/Sprites/frame1.png" id="9_hxg6n"]
+[ext_resource type="Texture2D" uid="uid://ywfji2daw1bp" path="res://Resource/Animation Assets/Effect/Death/explosion-1-g/Sprites/frame2.png" id="10_55evs"]
+[ext_resource type="Texture2D" uid="uid://yfo5iwlnkk2e" path="res://Resource/Animation Assets/Effect/Death/explosion-1-g/Sprites/frame3.png" id="11_im2cf"]
+[ext_resource type="Texture2D" uid="uid://takto57vwvq2" path="res://Resource/Animation Assets/Effect/Death/explosion-1-g/Sprites/frame4.png" id="12_x1tp6"]
+[ext_resource type="Texture2D" uid="uid://sv0c5bgiydsa" path="res://Resource/Animation Assets/Effect/Death/explosion-1-g/Sprites/frame5.png" id="13_k0w51"]
+[ext_resource type="Texture2D" uid="uid://b2ya6x1n3wc4g" path="res://Resource/Animation Assets/Effect/Death/explosion-1-g/Sprites/frame6.png" id="14_246kp"]
+[ext_resource type="Texture2D" uid="uid://cygh66dhvfawh" path="res://Resource/Animation Assets/Effect/Death/explosion-1-g/Sprites/frame7.png" id="15_iv2f3"]
+
+[resource]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_y4hlb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_rlt10")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_evllw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_rri7s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_ow38i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_nui46")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_hod26")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_hxg6n")
+}],
+"loop": 0,
+"name": &"explosion1",
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_hxg6n")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_55evs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_im2cf")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_x1tp6")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_k0w51")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_246kp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_iv2f3")
+}],
+"loop": 0,
+"name": &"explosion2",
+"speed": 15.0
+}]

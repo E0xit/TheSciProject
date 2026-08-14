@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://cghgutk7n68gd"]
+
+[ext_resource type="PackedScene" uid="uid://jx0bfj51rfan" path="res://Scene/effect.tscn" id="1_5fdky"]
+[ext_resource type="SpriteFrames" uid="uid://c332xijqy2d7u" path="res://Resource/Animation Assets/Effect/Death/death_effect.tres" id="2_hv5po"]
+[ext_resource type="AudioStream" uid="uid://b7uo55l3h3sql" path="res://Resource/Sound/SFX/Death.wav" id="3_5nih2"]
+
+[node name="DeathEffect" unique_id=1788296772 instance=ExtResource("1_5fdky")]
+
+[node name="AnimatedSprite2D" parent="." index="0" unique_id=846895306]
+scale = Vector2(3.6247973, 3.6247973)
+sprite_frames = ExtResource("2_hv5po")
+animation = &"explosion1"
+frame = 7
+frame_progress = 1.0
+
+[node name="AudioStreamPlayer2D" parent="." index="1" unique_id=922642297]
+stream = ExtResource("3_5nih2")
