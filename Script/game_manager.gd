@@ -2,7 +2,7 @@ class_name GameManager extends Node
 
 signal score_changed(current_score: int)
 
-@export var target_score: int = 67
+@export var target_score: int = 100
 @export var win_scene_path: String = "res://Scene/win_scene.tscn"
 @export var score_display: Label
 
@@ -14,11 +14,10 @@ func _ready() -> void:
 	score_display.text = "KILLS: %d / %d" % [score, target_score]
 
 func add_score(amount: int = 1) -> void:
-	score_display.text = "KILLS: %d / %d" % [score, target_score]
 	score += amount
 	score_changed.emit(score)
 	print_rich("[color=yellow][GameManager][/color] 🏆 Score: %d/%d" % [score, target_score])
-	
+	score_display.text = "KILLS: %d / %d" % [score, target_score]
 	if score >= target_score:
 		_trigger_win()
 

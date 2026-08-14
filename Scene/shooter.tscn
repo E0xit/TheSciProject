@@ -3,9 +3,15 @@
 [ext_resource type="PackedScene" uid="uid://dobcsaqrgjkup" path="res://Scene/enemy_base.tscn" id="1_1sq15"]
 [ext_resource type="Script" uid="uid://bqlg8xiamvg6b" path="res://Script/shooter.gd" id="2_8gioi"]
 [ext_resource type="PackedScene" uid="uid://b53aa0l2by07a" path="res://Scene/projectile.tscn" id="3_gqb0m"]
+[ext_resource type="SpriteFrames" uid="uid://bortu1ir0ncl5" path="res://Resource/Animation Assets/Shooter/shooter.tres" id="4_kenkt"]
 
 [node name="Shooter" unique_id=1641051578 instance=ExtResource("1_1sq15")]
 script = ExtResource("2_8gioi")
 projectile_scene = ExtResource("3_gqb0m")
 shoot_interval = 2.0
-charge_time = 0.6
+charge_time = 1.0
+
+[node name="AnimatedSprite2D" parent="." index="0" unique_id=1816185751]
+scale = Vector2(0.035576504, 0.035576504)
+sprite_frames = ExtResource("4_kenkt")
+animation = &"idle"

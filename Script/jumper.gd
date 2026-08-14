@@ -3,7 +3,7 @@ extends EnemyBase
 @export_group("Jumper Config")
 @export var jump_cooldown: float = 2.0
 @export var charge_time: float = 0.5
-@export var jump_force_x: float = 350.0
+@export var jump_force_x: float = 1000.0
 @export var jump_force_y: float = -650.0
 @export var drop_force_y: float = 200.0
 
