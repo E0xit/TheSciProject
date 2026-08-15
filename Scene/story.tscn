@@ -35,4 +35,5 @@ theme_override_fonts/font = ExtResource("2_ler5b")
 theme_override_font_sizes/font_size = 94
 text = "ข้าม"
 
+[connection signal="finished" from="VideoStreamPlayer" to="." method="_on_video_stream_player_finished"]
 [connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

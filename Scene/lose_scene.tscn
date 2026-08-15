@@ -2,8 +2,12 @@
 
 [ext_resource type="PackedScene" uid="uid://c7ni3ntaranfd" path="res://Scene/win_scene.tscn" id="1_4okea"]
 [ext_resource type="AudioStream" uid="uid://ddxhsw0c0k8pg" path="res://Resource/Sound/SFX/Mario Death - Sound Effect (HD).mp3" id="2_i2s3g"]
+[ext_resource type="Texture2D" uid="uid://d21hngrjyk0xu" path="res://Resource/Image/GameOver.png" id="2_sgg6y"]
 
 [node name="Scene" unique_id=1310921389 instance=ExtResource("1_4okea")]
+
+[node name="Sprite2D" parent="." index="0" unique_id=1823724673]
+texture = ExtResource("2_sgg6y")
 
 [node name="Label" parent="." index="3" unique_id=2002580479]
 text = "แพ้แล้วอ้ะ"

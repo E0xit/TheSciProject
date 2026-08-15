@@ -1,16 +1,17 @@
 [gd_scene format=3 uid="uid://c7ni3ntaranfd"]
 
-[ext_resource type="Script" uid="uid://dbms1cj7rl2kn" path="res://Scene/win_scene.gd" id="1_d5y42"]
-[ext_resource type="Texture2D" uid="uid://d21hngrjyk0xu" path="res://Resource/Image/GameOver.png" id="2_d5y42"]
+[ext_resource type="Script" uid="uid://dbms1cj7rl2kn" path="res://Script/win_scene.gd" id="1_d5y42"]
+[ext_resource type="Texture2D" uid="uid://dngwmpx82d5vq" path="res://Resource/Image/win.png" id="2_xfxam"]
 [ext_resource type="StyleBox" uid="uid://di2rqo8k3mdm8" path="res://Resource/button_style.tres" id="3_a61d8"]
 [ext_resource type="FontFile" uid="uid://ct1bfgyxbyv1h" path="res://Resource/Font/Playpen_Sans_Thai/PlaypenSansThai-VariableFont_wght.ttf" id="4_xfxam"]
+[ext_resource type="AudioStream" uid="uid://beupl4k4chrcv" path="res://Resource/Sound/SFX/FNAF_ Kids Cheering - Gaming Sound Effect (HD).mp3" id="5_rvas1"]
 
 [node name="Scene" type="Node2D" unique_id=1310921389]
 script = ExtResource("1_d5y42")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1823724673]
 scale = Vector2(1.0632704, 1.0632704)
-texture = ExtResource("2_d5y42")
+texture = ExtResource("2_xfxam")
 
 [node name="RestartButton" type="Button" parent="." unique_id=1129049368]
 anchors_preset = 8
@@ -66,6 +67,7 @@ horizontal_alignment = 1
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1959397206]
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1513768997]
+stream = ExtResource("5_rvas1")
 autoplay = true
 
 [connection signal="pressed" from="RestartButton" to="." method="_on_restart_button_pressed"]

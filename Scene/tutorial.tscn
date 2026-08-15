@@ -1,7 +1,10 @@
 [gd_scene format=3 uid="uid://cadsilu2x8v1s"]
 
 [ext_resource type="PackedScene" uid="uid://dmx5pi7sy4il2" path="res://Scene/story.tscn" id="1_5q7px"]
-[ext_resource type="Texture2D" uid="uid://bmqjqdjknuwi6" path="res://Resource/Image/images.jpeg" id="2_sywdm"]
+[ext_resource type="Texture2D" uid="uid://c7ocvo1pew5c3" path="res://Resource/Image/Toturial.png" id="2_sywdm"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_abeby"]
+bg_color = Color(0, 0, 0, 0.69803923)
 
 [node name="Tutorial" unique_id=1939935794 instance=ExtResource("1_5q7px")]
 next_scene = "res://Scene/main.tscn"
@@ -10,8 +13,10 @@ next_scene = "res://Scene/main.tscn"
 autoplay = false
 
 [node name="Sprite2D" type="Sprite2D" parent="." index="2" unique_id=644000949]
-scale = Vector2(4.7293744, 4.7293744)
+scale = Vector2(1.0386686, 1.0386686)
 texture = ExtResource("2_sywdm")
 
 [node name="Button" parent="." index="3" unique_id=883044653]
+scale = Vector2(1, 0.9934581)
+theme_override_styles/normal = SubResource("StyleBoxFlat_abeby")
 text = "เข้าใจแล้ว"

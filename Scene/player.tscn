@@ -50,3 +50,4 @@ texture = ExtResource("6_r6jsd")
 shape = SubResource("CircleShape2D_mcpcq")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=966470741]
+volume_db = 0.465
