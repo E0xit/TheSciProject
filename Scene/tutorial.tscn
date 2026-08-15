@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://cadsilu2x8v1s"]
+
+[ext_resource type="PackedScene" uid="uid://dmx5pi7sy4il2" path="res://Scene/story.tscn" id="1_5q7px"]
+[ext_resource type="Texture2D" uid="uid://bmqjqdjknuwi6" path="res://Resource/Image/images.jpeg" id="2_sywdm"]
+
+[node name="Tutorial" unique_id=1939935794 instance=ExtResource("1_5q7px")]
+next_scene = "res://Scene/main.tscn"
+
+[node name="VideoStreamPlayer" parent="." index="1" unique_id=25102776]
+autoplay = false
+
+[node name="Sprite2D" type="Sprite2D" parent="." index="2" unique_id=644000949]
+scale = Vector2(4.7293744, 4.7293744)
+texture = ExtResource("2_sywdm")
+
+[node name="Button" parent="." index="3" unique_id=883044653]
+text = "เข้าใจแล้ว"

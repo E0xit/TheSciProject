@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://cbfancl4yikwu"]
+
+[ext_resource type="PackedScene" uid="uid://c7ni3ntaranfd" path="res://Scene/win_scene.tscn" id="1_4okea"]
+[ext_resource type="AudioStream" uid="uid://ddxhsw0c0k8pg" path="res://Resource/Sound/SFX/Mario Death - Sound Effect (HD).mp3" id="2_i2s3g"]
+
+[node name="Scene" unique_id=1310921389 instance=ExtResource("1_4okea")]
+
+[node name="Label" parent="." index="3" unique_id=2002580479]
+text = "แพ้แล้วอ้ะ"
+
+[node name="AudioStreamPlayer" parent="." index="5" unique_id=1513768997]
+stream = ExtResource("2_i2s3g")

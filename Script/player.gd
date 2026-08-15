@@ -28,7 +28,7 @@ signal player_died
 @export var sfx_die: AudioStream
 
 @export_group("Game Over Config")
-@export var lose_scene_path: String = "res://Scene/win_scene.tscn"
+@export var lose_scene_path: String = "res://Scene/lose_scene.tscn"
 
 @export_group("Debug Options")
 @export var enable_logs: bool = true

@@ -82,7 +82,7 @@ func _try_spawn_enemy() -> void:
 
 	var score_progress: float = clamp(float(current_score) / float(score_for_max_burst), 0.0, 1.0)
 	var target_burst: int = int(lerp(1.0, float(max_burst_count), score_progress))
-	var spawn_amount: int = randi_range(3, target_burst)
+	var spawn_amount: int = randi_range(1, target_burst)
 
 	for i in range(spawn_amount):
 		if not is_spawning:

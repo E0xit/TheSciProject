@@ -1,11 +1,72 @@
 [gd_scene format=3 uid="uid://c7ni3ntaranfd"]
 
-[ext_resource type="Texture2D" uid="uid://bmqjqdjknuwi6" path="res://Resource/Image/images.jpeg" id="1_v1pe1"]
+[ext_resource type="Script" uid="uid://dbms1cj7rl2kn" path="res://Scene/win_scene.gd" id="1_d5y42"]
+[ext_resource type="Texture2D" uid="uid://d21hngrjyk0xu" path="res://Resource/Image/GameOver.png" id="2_d5y42"]
+[ext_resource type="StyleBox" uid="uid://di2rqo8k3mdm8" path="res://Resource/button_style.tres" id="3_a61d8"]
+[ext_resource type="FontFile" uid="uid://ct1bfgyxbyv1h" path="res://Resource/Font/Playpen_Sans_Thai/PlaypenSansThai-VariableFont_wght.ttf" id="4_xfxam"]
 
 [node name="Scene" type="Node2D" unique_id=1310921389]
+script = ExtResource("1_d5y42")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1823724673]
-scale = Vector2(4.8506436, 4.8506436)
-texture = ExtResource("1_v1pe1")
+scale = Vector2(1.0632704, 1.0632704)
+texture = ExtResource("2_d5y42")
+
+[node name="RestartButton" type="Button" parent="." unique_id=1129049368]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -238.0
+offset_top = -53.25
+offset_right = 238.0
+offset_bottom = 53.25
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("4_xfxam")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = ExtResource("3_a61d8")
+text = "เล่นใหม่"
+
+[node name="BackMainMenu" type="Button" parent="." unique_id=315151727]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -238.0
+offset_top = 84.0
+offset_right = 238.0
+offset_bottom = 190.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("4_xfxam")
+theme_override_font_sizes/font_size = 50
+theme_override_styles/normal = ExtResource("3_a61d8")
+text = "กลับไปหน้าหลัก"
+
+[node name="Label" type="Label" parent="." unique_id=2002580479]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -292.5
+offset_top = -429.0
+offset_right = 292.5
+offset_bottom = -214.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("4_xfxam")
+theme_override_font_sizes/font_size = 123
+text = "เย้ ชนะแล้ว"
+horizontal_alignment = 1
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1959397206]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1513768997]
+autoplay = true
+
+[connection signal="pressed" from="RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="BackMainMenu" to="." method="_on_back_main_menu_pressed"]

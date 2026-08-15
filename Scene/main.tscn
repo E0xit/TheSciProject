@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://dovmbxc4x66en"]
 
 [ext_resource type="SpriteFrames" uid="uid://edavbb2o3yor" path="res://Resource/Animation Assets/BG/background.tres" id="1_ow1sv"]
+[ext_resource type="Texture2D" uid="uid://c6snciosa5axm" path="res://Resource/Image/772759556_2040603894009015_4703642322008512023_n.jpg" id="2_0sxm5"]
 [ext_resource type="PackedScene" uid="uid://c2box7r1ytc1o" path="res://Scene/player.tscn" id="2_sblpm"]
 [ext_resource type="PackedScene" uid="uid://ceadqkjnvxdrd" path="res://Scene/Roamer.tscn" id="3_r34rm"]
 [ext_resource type="Script" uid="uid://ddb8fdf0dx6i2" path="res://Script/enemy_spawner.gd" id="4_2wwxx"]
@@ -8,6 +9,11 @@
 [ext_resource type="PackedScene" uid="uid://bfmnnoffhcdja" path="res://Scene/jumper.tscn" id="5_3amdw"]
 [ext_resource type="Script" uid="uid://clgihpoygtfty" path="res://Script/game_manager.gd" id="6_1xcnr"]
 [ext_resource type="FontFile" uid="uid://bc6waay7h0af8" path="res://Resource/Font/Pixelify_Sans/PixelifySans-VariableFont_wght.ttf" id="8_75buv"]
+[ext_resource type="Texture2D" uid="uid://cer6o2juvkpsx" path="res://Resource/Image/Heart/hearts/heart_spritesheet_32x32.png" id="9_c2iwn"]
+[ext_resource type="Script" uid="uid://m3trlp6ombo1" path="res://Script/player_hp.gd" id="10_3pt4j"]
+[ext_resource type="FontFile" uid="uid://ct1bfgyxbyv1h" path="res://Resource/Font/Playpen_Sans_Thai/PlaypenSansThai-VariableFont_wght.ttf" id="11_7y4ci"]
+[ext_resource type="Script" uid="uid://cq3inmcbwfl36" path="res://Script/exit_button.gd" id="12_mxd2g"]
+[ext_resource type="AudioStream" uid="uid://c7tuxd5n8x3lo" path="res://Resource/Sound/BGM/cyberwave-orchestra-orchestral-music-loop-287416.mp3" id="14_hspdg"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mcpcq"]
 size = Vector2(55, 972)
@@ -24,6 +30,11 @@ sprite_frames = ExtResource("1_ow1sv")
 autoplay = "default"
 frame = 9
 frame_progress = 0.6479296
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=445359593]
+z_index = -10
+scale = Vector2(1.9872048, 1.9872046)
+texture = ExtResource("2_0sxm5")
 
 [node name="Environment" type="Node2D" parent="." unique_id=499864203]
 
@@ -76,12 +87,13 @@ shape = SubResource("RectangleShape2D_xqwa5")
 one_way_collision = true
 
 [node name="Player" parent="." unique_id=1578863103 instance=ExtResource("2_sblpm")]
-position = Vector2(-781, -316)
+position = Vector2(-781, -104)
 scale = Vector2(5.789882, 5.789882)
 enable_logs = false
 show_debug_draw = false
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=782834451]
+zoom = Vector2(0.865, 0.865)
 
 [node name="GameManager" type="Node" parent="." unique_id=1143828621 node_paths=PackedStringArray("score_display")]
 script = ExtResource("6_1xcnr")
@@ -94,11 +106,49 @@ shooter_scene = ExtResource("5_1xcnr")
 jumper_scene = ExtResource("5_3amdw")
 
 [node name="ScoreLabel" type="Label" parent="." unique_id=924450774]
-offset_left = -760.0
-offset_top = 343.0
-offset_right = 977.0
-offset_bottom = 532.0
+z_index = 10
+offset_left = -604.0
+offset_top = 416.0
+offset_right = 1133.0
+offset_bottom = 605.0
 theme_override_fonts/font = ExtResource("8_75buv")
 theme_override_font_sizes/font_size = 138
 text = "67/67"
 horizontal_alignment = 2
+
+[node name="PlayerHP" type="Node2D" parent="." unique_id=1205013728]
+position = Vector2(-1056, 502.99997)
+scale = Vector2(8.674453, 8.674453)
+
+[node name="Sprite2D" type="Sprite2D" parent="PlayerHP" unique_id=1657485516]
+z_index = 10
+texture_filter = 1
+texture = ExtResource("9_c2iwn")
+hframes = 5
+vframes = 2
+frame = 4
+script = ExtResource("10_3pt4j")
+
+[node name="ExitButton" type="Button" parent="." unique_id=657949453]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1118.0
+offset_top = -608.0
+offset_right = -719.0
+offset_bottom = -497.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("11_7y4ci")
+theme_override_font_sizes/font_size = 58
+text = "กลับไปหน้าหลัก"
+script = ExtResource("12_mxd2g")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1515373113]
+stream = ExtResource("14_hspdg")
+volume_db = -10.643
+autoplay = true
+
+[connection signal="pressed" from="ExitButton" to="ExitButton" method="_on_pressed"]

@@ -1,0 +1,149 @@
+[gd_scene format=3 uid="uid://ci80ohd0w3a2i"]
+
+[ext_resource type="Script" uid="uid://doinbryrahr3j" path="res://Script/main_menu.gd" id="1_87ipw"]
+[ext_resource type="FontFile" uid="uid://ct1bfgyxbyv1h" path="res://Resource/Font/Playpen_Sans_Thai/PlaypenSansThai-VariableFont_wght.ttf" id="1_ftydy"]
+[ext_resource type="StyleBox" uid="uid://di2rqo8k3mdm8" path="res://Resource/button_style.tres" id="3_hptlk"]
+[ext_resource type="Texture2D" uid="uid://bdtei60x0u3oh" path="res://Resource/Image/off-button.png" id="3_kqsxi"]
+[ext_resource type="Texture2D" uid="uid://dupbfwtr2rity" path="res://Resource/Image/on-button.png" id="4_pvidh"]
+[ext_resource type="Texture2D" uid="uid://ouxxc0am15ow" path="res://Resource/Image/ใครรวย (3).png" id="5_pvidh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hii65"]
+bg_color = Color(0.13682577, 0.13682574, 0.13682571, 1)
+
+[node name="MainMenu" type="Node2D" unique_id=1052016868 node_paths=PackedStringArray("setting_menu")]
+script = ExtResource("1_87ipw")
+setting_menu = NodePath("Panel")
+
+[node name="Start" type="Button" parent="." unique_id=813691283]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -246.0
+offset_top = -40.0
+offset_right = 246.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_ftydy")
+theme_override_font_sizes/font_size = 57
+theme_override_styles/normal = ExtResource("3_hptlk")
+text = "เริ่มเกม"
+
+[node name="Setting" type="Button" parent="." unique_id=1551860231]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -246.0
+offset_top = 76.0
+offset_right = 246.0
+offset_bottom = 156.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("1_ftydy")
+theme_override_font_sizes/font_size = 57
+theme_override_styles/normal = ExtResource("3_hptlk")
+text = "ตั้งค่า"
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=159421257]
+
+[node name="Panel" type="Panel" parent="." unique_id=791981511]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -972.5
+offset_top = -521.5
+offset_right = 972.5
+offset_bottom = 521.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_hii65")
+
+[node name="Label" type="Label" parent="Panel" unique_id=418775207]
+layout_mode = 0
+offset_left = 37.5
+offset_top = 28.5
+offset_right = 261.5
+offset_bottom = 127.5
+scale = Vector2(1.3758026, 1.3758026)
+theme_override_fonts/font = ExtResource("1_ftydy")
+theme_override_font_sizes/font_size = 80
+text = "การตั้งค่า"
+
+[node name="Effect" type="Label" parent="Panel" unique_id=1802285456]
+layout_mode = 0
+offset_left = 122.5
+offset_top = 342.5
+offset_right = 346.5
+offset_bottom = 483.5
+scale = Vector2(1.2397511, 1.2397511)
+theme_override_fonts/font = ExtResource("1_ftydy")
+theme_override_font_sizes/font_size = 80
+text = "เสียงเอฟเฟค"
+
+[node name="EffectButton" type="TextureButton" parent="Panel" unique_id=800726348]
+texture_filter = 1
+layout_mode = 0
+offset_left = 744.5
+offset_top = 394.5
+offset_right = 1256.5
+offset_bottom = 906.5
+scale = Vector2(0.24423638, 0.24423638)
+toggle_mode = true
+button_pressed = true
+texture_normal = ExtResource("3_kqsxi")
+texture_pressed = ExtResource("4_pvidh")
+stretch_mode = 0
+
+[node name="Music" type="Label" parent="Panel" unique_id=1501073037]
+layout_mode = 0
+offset_left = 122.5
+offset_top = 514.5
+offset_right = 346.5
+offset_bottom = 655.5
+scale = Vector2(1.2397511, 1.2397511)
+theme_override_fonts/font = ExtResource("1_ftydy")
+theme_override_font_sizes/font_size = 80
+text = "เสียงดนตรี"
+
+[node name="MusicButton" type="TextureButton" parent="Panel" unique_id=246615668]
+texture_filter = 1
+layout_mode = 0
+offset_left = 744.5
+offset_top = 555.5
+offset_right = 1256.5
+offset_bottom = 1067.5
+scale = Vector2(0.24423638, 0.24423638)
+toggle_mode = true
+button_pressed = true
+texture_normal = ExtResource("3_kqsxi")
+texture_pressed = ExtResource("4_pvidh")
+stretch_mode = 0
+
+[node name="SettingBack" type="Button" parent="Panel" unique_id=888908567]
+layout_mode = 0
+offset_left = 1706.5
+offset_top = 20.5
+offset_right = 1923.8939
+offset_bottom = 126.0
+theme_override_fonts/font = ExtResource("1_ftydy")
+theme_override_font_sizes/font_size = 47
+text = "ย้อนกลับ"
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=798730612]
+z_index = -4
+position = Vector2(9.1552734e-05, 21)
+scale = Vector2(1.0427434, 1.0427437)
+texture = ExtResource("5_pvidh")
+
+[connection signal="pressed" from="Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="Setting" to="." method="_on_setting_pressed"]
+[connection signal="pressed" from="Panel/SettingBack" to="." method="_on_setting_back_pressed"]
