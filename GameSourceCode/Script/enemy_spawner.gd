@@ -37,8 +37,10 @@ var player: CharacterBody2D
 var is_spawning: bool = true # 💡 เพิ่ม Flag คุมสถานะการทำงาน
 
 func _ready() -> void:
-	add_to_group("enemy_spawner") # 💡 [FIXED] ใส่กลุ่มให้ Spawner เพื่อให้ค้นหาเจอ!
-	current_spawn_interval = initial_spawn_interval
+	add_to_group("enemy_spawner")
+	
+	# 💡 เปลี่ยนบรรทัดนี้ด้วยให้ดึงค่าเริ่มต้นจาก GlobalConfig
+	current_spawn_interval = GlobalConfig.initial_spawn_interval
 	
 	player = get_tree().get_first_node_in_group("player_body") as CharacterBody2D
 	if not player:
@@ -69,9 +71,10 @@ func _try_spawn_enemy() -> void:
 	if manager and "score" in manager:
 		current_score = manager.score
 
+	# 💡 เปลี่ยนมาดึงค่าจาก GlobalConfig ทั้งหมด
 	var dynamic_max_enemies = min(
-		initial_max_enemies + int(current_score / float(enemies_increase_step)),
-		max_enemies_cap
+		GlobalConfig.initial_max_enemies + int(current_score / float(GlobalConfig.enemies_increase_step)),
+		GlobalConfig.max_enemies_cap
 	)
 
 	var active_enemies = get_tree().get_nodes_in_group("enemy_hitbox")
@@ -80,8 +83,9 @@ func _try_spawn_enemy() -> void:
 	if current_count >= dynamic_max_enemies:
 		return
 
-	var score_progress: float = clamp(float(current_score) / float(score_for_max_burst), 0.0, 1.0)
-	var target_burst: int = int(lerp(1.0, float(max_burst_count), score_progress))
+	# 💡 เปลี่ยนมาดึงค่าจาก GlobalConfig ทั้งหมด[cite: 2]
+	var score_progress: float = clamp(float(current_score) / float(GlobalConfig.score_for_max_burst), 0.0, 1.0)
+	var target_burst: int = int(lerp(1.0, float(GlobalConfig.max_burst_count), score_progress))
 	var spawn_amount: int = randi_range(1, target_burst)
 
 	for i in range(spawn_amount):
@@ -104,7 +108,8 @@ func _try_spawn_enemy() -> void:
 		enemy_instance.global_position = spawn_pos
 		get_tree().current_scene.add_child(enemy_instance)
 
-	current_spawn_interval = max(min_spawn_interval, current_spawn_interval - interval_decay_rate)
+	# 💡 เปลี่ยนมาดึงค่าจาก GlobalConfig ทั้งหมด[cite: 2]
+	current_spawn_interval = max(GlobalConfig.min_spawn_interval, current_spawn_interval - GlobalConfig.interval_decay_rate)
 	spawn_timer.wait_time = current_spawn_interval
 
 func _find_valid_spawn_position() -> Vector2:

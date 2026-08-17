@@ -2,7 +2,8 @@ class_name GameManager extends Node
 
 signal score_changed(current_score: int)
 
-@export var target_score: int = 67
+var target_score: int:
+	get: return GlobalConfig.target_score
 @export var win_scene_path: String = "res://Scene/win_scene.tscn"
 @export var score_display: Label
 
